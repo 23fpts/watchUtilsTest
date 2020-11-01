@@ -1,5 +1,7 @@
 package com.thc.bluetoothtest.socket;
 
+import com.thc.bluetoothtest.service.Json2DatabaseService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.websocket.*;
@@ -24,6 +26,9 @@ public class WebSocket {
 
     private String id;
     private Session session;
+
+    @Autowired
+    private Json2DatabaseService json2DatabaseService;
 
     /**
      * 接入连接回调
@@ -61,7 +66,7 @@ public class WebSocket {
 
         System.out.println(this.id + "发来消息：" + message);
 
-
+        json2DatabaseService.insert(message);
     }
 
     /**

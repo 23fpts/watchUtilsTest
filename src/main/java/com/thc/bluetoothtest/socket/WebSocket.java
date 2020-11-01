@@ -58,7 +58,10 @@ public class WebSocket {
      */
     @OnMessage
     public void onMessage(String message) {
+
         System.out.println(this.id + "发来消息：" + message);
+
+
     }
 
     /**

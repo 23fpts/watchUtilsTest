@@ -4,11 +4,14 @@ import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.thc.bluetoothtest.config.MyProps;
+import com.thc.bluetoothtest.mapper.WatchDataHexMapper;
+import com.thc.bluetoothtest.model.WatchDataHex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +29,9 @@ public class TestController {
 
     @Autowired
     private MyProps myProps;
+
+    @Autowired
+    private WatchDataHexMapper watchDataHexMapper;
 
     @GetMapping("test")
     public String test(){
@@ -50,5 +56,13 @@ public class TestController {
             e.printStackTrace();
             throw new Exception("第三方接口异常");
         }
+    }
+
+    @GetMapping("testMapper")
+    public String testMapper() {
+        WatchDataHex watchDataHex = new WatchDataHex();
+        watchDataHex.setData("test");
+        watchDataHexMapper.insert(watchDataHex);
+        return "test";
     }
 }

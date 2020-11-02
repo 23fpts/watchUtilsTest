@@ -21,10 +21,14 @@ public class Json2DatabaseService {
     private WatchDataHexMapper watchDataHexMapper;
 
     public void insert(String message) {
-        JSONObject jsonObject = JSON.parseObject(message);
-        String data = jsonObject.getString("data");
+        System.out.println("insert");
+        System.out.println(message);
+        String data = message;
+//        JSONObject jsonObject = JSON.parseObject(message);
+//        String data = jsonObject.getString("data");
         WatchDataHex watchDataHex = new WatchDataHex();
         watchDataHex.setData(data);
+        System.out.println("bedoreInsert");
         watchDataHexMapper.insert(watchDataHex);
     }
 }

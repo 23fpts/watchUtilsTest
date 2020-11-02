@@ -2,6 +2,7 @@ package com.thc.bluetoothtest.socket;
 
 import com.thc.bluetoothtest.service.Json2DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.websocket.*;
@@ -18,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2020/10/30 2:43 下午
  */
 @ServerEndpoint("/WebSocket/{id}")
-@RestController
+@Component
 public class WebSocket {
 
     // 存储会话
@@ -27,8 +28,16 @@ public class WebSocket {
     private String id;
     private Session session;
 
+//    @Autowired
+//    private Json2DatabaseService json2DatabaseService;
+
+    private static Json2DatabaseService json2DatabaseService;
+
     @Autowired
-    private Json2DatabaseService json2DatabaseService;
+    public void setJson2DatabaseService(Json2DatabaseService json2DatabaseService) {
+        System.out.println("set");
+        WebSocket.json2DatabaseService = json2DatabaseService;
+    }
 
     /**
      * 接入连接回调
@@ -65,8 +74,14 @@ public class WebSocket {
     public void onMessage(String message) {
 
         System.out.println(this.id + "发来消息：" + message);
-
+        System.out.println("abcd");
         json2DatabaseService.insert(message);
+//        messageTest();
+//        Json2DatabaseService json2DatabaseService1 = new Json2DatabaseService();
+//        setJson2DatabaseService(json2DatabaseService1);
+//        json2DatabaseService.insert(message);
+        System.out.println("efg");
+
     }
 
     /**
@@ -77,6 +92,13 @@ public class WebSocket {
     @OnError
     public void onError(Throwable error) {
 
+    }
+
+    public void messageTest() {
+        System.out.println("onmessageTest");
+        for (int i=0; i<20; i++){
+            System.out.println(i);
+        }
     }
 
     /**

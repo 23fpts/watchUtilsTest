@@ -23,12 +23,14 @@ public class Json2DatabaseService {
     public void insert(String message) {
         System.out.println("insert");
         System.out.println(message);
-        String data = message;
-//        JSONObject jsonObject = JSON.parseObject(message);
-//        String data = jsonObject.getString("data");
-        WatchDataHex watchDataHex = new WatchDataHex();
-        watchDataHex.setData(data);
-        System.out.println("bedoreInsert");
-        watchDataHexMapper.insert(watchDataHex);
+//        String data = message;
+        JSONObject jsonObject = JSON.parseObject(message);
+        if (jsonObject.containsKey("data")){
+            String data = jsonObject.getString("data");
+            WatchDataHex watchDataHex = new WatchDataHex();
+            watchDataHex.setData(data);
+            System.out.println("bedoreInsert");
+            watchDataHexMapper.insert(watchDataHex);
+        }
     }
 }

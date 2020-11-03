@@ -3,6 +3,7 @@ package com.thc.bluetoothtest.utils;
 import com.thc.bluetoothtest.model.WatchData;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * @author thc
@@ -21,6 +22,8 @@ public class WatchDataUtil {
      * @return
      */
     public static WatchData HexDataToData(String hex) {
+        // 或者用 Integer.parseUnsignedInt 无符号
+        // TODO 经纬度的正负
         // 先去掉逗号
         hex = hex.replaceAll(",", "");
         WatchData watchData = new WatchData();
@@ -89,17 +92,23 @@ public class WatchDataUtil {
         System.out.println("运动状态: "+watchData.getSportsStatus());
         System.out.println(hex.substring(72, 74));
         // 经度 longitude 74-81  TODO
-        Integer longitude = Integer.parseInt(hex.substring(74, 82), 16);
-        watchData.setLongitude(new BigDecimal(longitude));
+        BigInteger longitude = new BigInteger(hex.substring(74, 82), 16);
+        // 再除以1000000
+        BigDecimal longitudeDeal = new BigDecimal(longitude);
+        longitudeDeal = longitudeDeal.divide(new BigDecimal(1000000));
+        watchData.setLongitude(longitudeDeal);
         System.out.println("经度: "+watchData.getLongitude() );
         System.out.println(hex.substring(74, 82));
         // 纬度 latitude 82-89 TODO
-        Integer latitude = Integer.parseInt(hex.substring(82, 90), 16);
-        watchData.setLatitude(new BigDecimal(latitude));
+        BigInteger latitude = new BigInteger(hex.substring(82, 90), 16);
+        // 再除以1000000
+        BigDecimal latitudeDeal = new BigDecimal(latitude);
+        latitudeDeal = latitudeDeal.divide(new BigDecimal(1000000));
+        watchData.setLatitude(latitudeDeal);
         System.out.println("纬度: "+watchData.getLatitude());
         System.out.println(hex.substring(82, 90));
 
-        return null;
+        return watchData;
     }
 
     public static void main(String[] args) {

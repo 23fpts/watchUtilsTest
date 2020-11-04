@@ -5,10 +5,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.thc.bluetoothtest.config.MyProps;
 import com.thc.bluetoothtest.mapper.WatchDataHexMapper;
+import com.thc.bluetoothtest.model.WatchData;
 import com.thc.bluetoothtest.model.WatchDataHex;
+import com.thc.bluetoothtest.service.WatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -32,6 +35,9 @@ public class TestController {
 
     @Autowired
     private WatchDataHexMapper watchDataHexMapper;
+
+    @Autowired
+    private WatchService watchService;
 
     @GetMapping("test")
     public String test(){
@@ -64,5 +70,18 @@ public class TestController {
         watchDataHex.setData("test");
         watchDataHexMapper.insert(watchDataHex);
         return "test";
+    }
+
+    /**
+     * id=5,
+     * @param id
+     * @return
+     */
+    @GetMapping("testWatch")
+    public Map<String, Object> testWatch(@RequestParam(value = "id", required = true, defaultValue = "") Integer id){
+        WatchData watchData = watchService.HexDataToData(id);
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", watchData);
+        return result;
     }
 }
